@@ -1,7 +1,25 @@
-deploy
-======
+cpdeploy
+========
 
 A copy deployer that tries not to copy unchanged content, written in C#.
+
+Usage
+-----
+
+    cpdeploy  1.0.0.0 - Copyright (c)2015 Rafael 'Monoman' Teixeira, Managed Commons Team
+    A copy deployer that tries not to copy unchanged content.
+
+    Usage: cpdeploy [options] <path of directory to deploy into>
+    Options:
+      -c -clean           Clean target directory
+      -f -from:directory  Path to directory to copy from (default: current directory)
+      -? -help            Show this help list
+      -q -quiet           Quiet mode
+      -v -verbose         Verbose output
+      -V -version         Display version and licensing information
+
+    Please report bugs at <https://github.com/managed-commons/cpdeploy/issues>
+
 
 License: MIT
 ------------
