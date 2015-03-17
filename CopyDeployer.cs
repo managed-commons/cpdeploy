@@ -107,7 +107,7 @@ namespace cpdeploy
 
 		private void Summary(string format, params object[] parameters)
 		{
-			WriteLine(_options.Summary, format, parameters);
+			WriteLine(_options.Summary || !_options.Quiet, format, parameters);
 		}
 
 		private void Quiet(string format, params object[] parameters)
