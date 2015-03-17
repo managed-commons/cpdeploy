@@ -59,7 +59,7 @@ namespace cpdeploy
 		[Option("Summary mode - Only the summary line", "summary", ShortForm = 's')]
 		public bool Summary { get; set; }
 
-		public string To { get { return FirstArgument; } }
+		public string To { get { return this.RemainingArguments.FirstOrDefault(s => !s.StartsWith("-")); } }
 
 		[Option("Verbose output", "verbose", ShortForm = 'v')]
 		public bool Verbose { get; set; }

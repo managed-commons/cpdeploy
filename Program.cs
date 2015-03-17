@@ -30,6 +30,8 @@ namespace cpdeploy
 	{
 		private static int Execute(CopyDeployerOptions options)
 		{
+			if (!options.IsOk)
+				return 1;
 			if (!(options.Quiet || options.Summary))
 				options.ShowBanner();
 			return new CopyDeployer(options).Execute();
@@ -37,9 +39,7 @@ namespace cpdeploy
 
 		private static void Main(string[] args)
 		{
-			var options = new CopyDeployerOptions(args);
-			var exitCode = options.IsOk ? Execute(options) : 1;
-			Environment.Exit(exitCode);
+			Environment.Exit(Execute(new CopyDeployerOptions(args)));
 		}
 	}
 }
