@@ -56,6 +56,9 @@ namespace cpdeploy
 		[Option("Quiet mode", "quiet", ShortForm = 'q')]
 		public bool Quiet { get; set; }
 
+		[Option("Summary mode - Only the summary line", "summary", ShortForm = 's')]
+		public bool Summary { get; set; }
+
 		public string To { get { return FirstArgument; } }
 
 		[Option("Verbose output", "verbose", ShortForm = 'v')]

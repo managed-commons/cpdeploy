@@ -30,7 +30,7 @@ namespace cpdeploy
 	{
 		private static int Execute(CopyDeployerOptions options)
 		{
-			if (!options.Quiet)
+			if (!(options.Quiet || options.Summary))
 				options.ShowBanner();
 			return new CopyDeployer(options).Execute();
 		}

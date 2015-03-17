@@ -33,6 +33,8 @@ namespace cpdeploy
 		public CopyDeployer(CopyDeployerOptions options)
 		{
 			_options = options;
+			if (_options.Summary)
+				_options.Quiet = true;
 			if (_options.Quiet)
 				_options.Verbose = false;
 		}
@@ -56,7 +58,7 @@ namespace cpdeploy
 					Directory.Delete(to, true);
 				}
 				DeployDir(from, to);
-				Quiet("{0} files copied, {1} files skipped", _filesCopied, _filesSkipped);
+				Summary("{0} files copied, {1} files skipped", _filesCopied, _filesSkipped);
 				return 0;
 			} catch (Exception e) {
 				Quiet("Exception: {0}", e);
@@ -101,6 +103,11 @@ namespace cpdeploy
 			using (var md5 = MD5.Create())
 			using (var stream = File.OpenRead(file))
 				return md5.ComputeHash(stream);
+		}
+
+		private void Summary(string format, params object[] parameters)
+		{
+			WriteLine(_options.Summary, format, parameters);
 		}
 
 		private void Quiet(string format, params object[] parameters)
