@@ -33,10 +33,6 @@ namespace cpdeploy
 		public CopyDeployer(CopyDeployerOptions options)
 		{
 			_options = options;
-			if (_options.Summary)
-				_options.Quiet = true;
-			if (_options.Quiet)
-				_options.Verbose = false;
 		}
 
 		public int Execute()
@@ -48,17 +44,24 @@ namespace cpdeploy
 					Quiet("Path to copy from is not a valid directory: {0}", from);
 					return 2;
 				}
-				if (!Directory.Exists(Path.GetDirectoryName(to))) {
+				if (!Directory.Exists(ParentDir(to))) {
 					Quiet("Path to deploy into is not a valid directory: {0}", to);
 					return 3;
 				}
-				Quiet("Deploying from {0} into {1}", from, to);
-				if (_options.CleanTarget && Directory.Exists(to)) {
-					Quiet("Removing previous content at: {0}", to);
-					Directory.Delete(to, true);
+				if (_options.DontOverWrite && Directory.Exists(to)) {
+					Summary("Skipping existing target directory: {0}", to);
+				} else {
+					Quiet("Deploying from {0} into {1}", from, to);
+					if (_options.CleanTarget && Directory.Exists(to)) {
+						Quiet("Removing previous content at: {0}", to);
+						Directory.Delete(to, true);
+					}
+					DeployDir(from, to);
+					if (_options.CleanTarget)
+						Summary("{0} files copied", _filesCopied);
+					else
+						Summary("{0} files copied, {1} files skipped", _filesCopied, _filesSkipped);
 				}
-				DeployDir(from, to);
-				Summary("{0} files copied, {1} files skipped", _filesCopied, _filesSkipped);
 				return 0;
 			} catch (Exception e) {
 				Quiet("Exception: {0}", e);
@@ -69,6 +72,11 @@ namespace cpdeploy
 		private int _filesCopied = 0;
 		private int _filesSkipped = 0;
 		private CopyDeployerOptions _options;
+
+		private static string ParentDir(string to)
+		{
+			return Path.GetDirectoryName(to);
+		}
 
 		private void DeployDir(string from, string to)
 		{
@@ -105,22 +113,22 @@ namespace cpdeploy
 				return md5.ComputeHash(stream);
 		}
 
-		private void Summary(string format, params object[] parameters)
-		{
-			WriteLine(_options.Summary || !_options.Quiet, format, parameters);
-		}
-
 		private void Quiet(string format, params object[] parameters)
 		{
-			WriteLine(!_options.Quiet, format, parameters);
+			WriteLineIf(!_options.Quiet, format, parameters);
+		}
+
+		private void Summary(string format, params object[] parameters)
+		{
+			WriteLineIf(_options.Summary || !_options.Quiet, format, parameters);
 		}
 
 		private void Verbose(string format, params object[] parameters)
 		{
-			WriteLine(_options.Verbose, format, parameters);
+			WriteLineIf(_options.Verbose, format, parameters);
 		}
 
-		private void WriteLine(bool condition, string format, object[] parameters)
+		private void WriteLineIf(bool condition, string format, object[] parameters)
 		{
 			if (condition)
 				Console.WriteLine(string.Format(format, parameters));

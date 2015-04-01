@@ -38,6 +38,9 @@ namespace cpdeploy
 		[Option("Clean target directory", "clean", ShortForm = 'c')]
 		public bool CleanTarget { get; set; }
 
+		[Option("Do not overwrite if there is a target directory", "dontoverwrite", ShortForm = 'd')]
+		public bool DontOverWrite { get; set; }
+
 		[Option("Path to {directory} to copy from (default: current directory)", "from", ShortForm = 'f')]
 		public string From { get; set; }
 
@@ -45,10 +48,18 @@ namespace cpdeploy
 		{
 			get
 			{
+				if (CleanTarget && DontOverWrite) {
+					ReportError(-1, "You can't ask to clean the target directory and not to overwrite it at the same time!!!");
+					return false;
+				}
 				if (string.IsNullOrWhiteSpace(FirstArgument)) {
 					DoHelp();
 					return false;
 				}
+				if (Summary)
+					Quiet = true;
+				if (Quiet)
+					Verbose = false;
 				return true;
 			}
 		}
@@ -80,7 +91,6 @@ namespace cpdeploy
 		{
 			base.InitializeOtherDefaults();
 			From = Directory.GetCurrentDirectory();
-			Verbose = false;
 		}
 	}
 }
