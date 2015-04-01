@@ -48,14 +48,22 @@ namespace cpdeploy
 		{
 			get
 			{
-				if (CleanTarget && DontOverWrite) {
-					ReportError(-1, "You can't ask to clean the target directory and not to overwrite it at the same time!!!");
-					return false;
-				}
 				if (string.IsNullOrWhiteSpace(FirstArgument)) {
 					DoHelp();
 					return false;
 				}
+				if (CleanTarget) {
+					if (DontOverWrite) {
+						ReportError(-1, "You can't ask to clean the target directory and to not overwrite it at the same time!!!");
+						return false;
+					}
+					if (Test) {
+						ReportError(-1, "You can't ask to clean the target directory and also test if something needs to be updated!!!");
+						return false;
+					}
+				}
+				if (Test)
+					DontOverWrite = false;
 				if (Summary)
 					Quiet = true;
 				if (Quiet)
@@ -69,6 +77,9 @@ namespace cpdeploy
 
 		[Option("Summary mode - Only the summary line", "summary", ShortForm = 's')]
 		public bool Summary { get; set; }
+
+		[Option("Test if there is anything to update", "test", ShortForm = 't')]
+		public bool Test { get; set; }
 
 		public string To { get { return this.RemainingArguments.FirstOrDefault(s => !s.StartsWith("-")); } }
 

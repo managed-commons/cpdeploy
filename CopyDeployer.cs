@@ -48,7 +48,14 @@ namespace cpdeploy
 					Quiet("Path to deploy into is not a valid directory: {0}", to);
 					return 3;
 				}
-				if (_options.DontOverWrite && Directory.Exists(to)) {
+				if (_options.Test) {
+					if (HaveEqualContents(from, to)) {
+						Summary("No files need to be updated");
+					} else {
+						Summary("Some files need to be updated");
+						return 4;
+					}
+				} else if (_options.DontOverWrite && Directory.Exists(to)) {
 					Summary("Skipping existing target directory: {0}", to);
 				} else {
 					Quiet("Deploying from {0} into {1}", from, to);
@@ -56,8 +63,9 @@ namespace cpdeploy
 						Quiet("Removing previous content at: {0}", to);
 						Directory.Delete(to, true);
 					}
+
 					DeployDir(from, to);
-					if (_options.CleanTarget)
+					if (_filesSkipped == 0)
 						Summary("{0} files copied", _filesCopied);
 					else
 						Summary("{0} files copied, {1} files skipped", _filesCopied, _filesSkipped);
@@ -80,8 +88,9 @@ namespace cpdeploy
 
 		private void DeployDir(string from, string to)
 		{
-			if (!Directory.Exists(to))
+			if (!Directory.Exists(to)) {
 				Directory.CreateDirectory(to);
+			}
 			foreach (var dir in Directory.EnumerateDirectories(from)) {
 				var toSubDir = Path.Combine(to, Path.GetFileName(dir));
 				Verbose("Copying directory {0} to {1}", dir, toSubDir);
@@ -89,12 +98,14 @@ namespace cpdeploy
 			}
 			foreach (var file in Directory.EnumerateFiles(from)) {
 				var toFile = Path.Combine(to, Path.GetFileName(file));
-				if (File.Exists(toFile))
+				if (File.Exists(toFile)) {
 					if (FilesMatch(file, toFile)) {
 						_filesSkipped++;
 						continue;
-					} else
+					} else {
 						File.Delete(toFile);
+					}
+				}
 				Verbose("Copying file {0} to {1}", file, toFile);
 				File.Copy(file, toFile);
 				_filesCopied++;
@@ -121,6 +132,27 @@ namespace cpdeploy
 		private void Summary(string format, params object[] parameters)
 		{
 			WriteLineIf(_options.Summary || !_options.Quiet, format, parameters);
+		}
+
+		private bool HaveEqualContents(string from, string to)
+		{
+			if (!Directory.Exists(to)) {
+				return false;
+			}
+			foreach (var dir in Directory.EnumerateDirectories(from)) {
+				var toSubDir = Path.Combine(to, Path.GetFileName(dir));
+				Verbose("Comparing directory {0} to {1}", dir, toSubDir);
+				if (!HaveEqualContents(dir, toSubDir))
+					return false;
+			}
+			foreach (var file in Directory.EnumerateFiles(from)) {
+				var toFile = Path.Combine(to, Path.GetFileName(file));
+				if (File.Exists(toFile) && FilesMatch(file, toFile)) {
+					continue;
+				}
+				return false;
+			}
+			return true;
 		}
 
 		private void Verbose(string format, params object[] parameters)
