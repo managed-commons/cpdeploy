@@ -63,7 +63,8 @@ namespace cpdeploy
 						Quiet("Removing previous content at: {0}", to);
 						Directory.Delete(to, true);
 					}
-
+					if (_options.OnlyLatest)
+						MoveSimilarFolders(to, _options.BackupDir);
 					DeployDir(from, to);
 					if (_filesSkipped == 0)
 						Summary("{0} files copied", _filesCopied);
@@ -78,12 +79,29 @@ namespace cpdeploy
 		}
 
 		private int _filesCopied = 0;
+
 		private int _filesSkipped = 0;
+
 		private CopyDeployerOptions _options;
+
+		private static bool IsPinned(string dir)
+		{
+			return dir.ToLower().EndsWith("-pinned");
+		}
+
+		private static string LastDir(string dir)
+		{
+			return Path.GetFileName(dir);
+		}
 
 		private static string ParentDir(string to)
 		{
 			return Path.GetDirectoryName(to);
+		}
+
+		private static string RemoveVersion(string path)
+		{
+			return new string(path.Reverse().SkipWhile(c => char.IsDigit(c) || c == '.').Reverse().ToArray());
 		}
 
 		private void DeployDir(string from, string to)
@@ -124,16 +142,6 @@ namespace cpdeploy
 				return md5.ComputeHash(stream);
 		}
 
-		private void Quiet(string format, params object[] parameters)
-		{
-			WriteLineIf(!_options.Quiet, format, parameters);
-		}
-
-		private void Summary(string format, params object[] parameters)
-		{
-			WriteLineIf(_options.Summary || !_options.Quiet, format, parameters);
-		}
-
 		private bool HaveEqualContents(string from, string to)
 		{
 			if (!Directory.Exists(to)) {
@@ -153,6 +161,43 @@ namespace cpdeploy
 				return false;
 			}
 			return true;
+		}
+
+		private void MoveDir(string dir, string target)
+		{
+			try {
+				Directory.Move(dir, target);
+			} catch (Exception e) {
+				Quiet("Failed to move '{0}' to '{1}' - Continuing...", dir, target);
+			}
+		}
+
+		private void MoveSimilarFolders(string latestPath, string backupDir)
+		{
+			var baseDir = ParentDir(latestPath);
+			var backupPath = Path.Combine(baseDir, backupDir);
+			var mask = RemoveVersion(LastDir(latestPath)) + ".*";
+			foreach (var dir in Directory.EnumerateDirectories(baseDir, mask))
+				if (!(dir.Equals(latestPath) || IsPinned(dir))) {
+					if (!Directory.Exists(backupPath)) {
+						Quiet("Creating backup dir '{0}'", backupPath);
+						Directory.CreateDirectory(backupPath);
+					}
+					var dirName = LastDir(dir);
+					var target = Path.Combine(backupPath, dirName);
+					Quiet("Moving older version '{0}' to '{1}'", dirName, backupDir);
+					MoveDir(dir, target);
+				}
+		}
+
+		private void Quiet(string format, params object[] parameters)
+		{
+			WriteLineIf(!_options.Quiet, format, parameters);
+		}
+
+		private void Summary(string format, params object[] parameters)
+		{
+			WriteLineIf(_options.Summary || !_options.Quiet, format, parameters);
 		}
 
 		private void Verbose(string format, params object[] parameters)

@@ -35,6 +35,9 @@ namespace cpdeploy
 		{
 		}
 
+		[Option("Name of {subdirectory} to copy older versions with -o (default: _OLDER).", "backup", ShortForm = 'b')]
+		public string BackupDir { get; set; }
+
 		[Option("Clean target directory", "clean", ShortForm = 'c')]
 		public bool CleanTarget { get; set; }
 
@@ -62,8 +65,10 @@ namespace cpdeploy
 						return false;
 					}
 				}
-				if (Test)
+				if (Test) {
 					DontOverWrite = false;
+					OnlyLatest = false;
+				}
 				if (Summary)
 					Quiet = true;
 				if (Quiet)
@@ -71,6 +76,9 @@ namespace cpdeploy
 				return true;
 			}
 		}
+
+		[Option("Move older versions to backup folder (use -b to choose backup folder).\n\tSkips pinned dirs (those ending in '-PINNED')", "onlylatest", ShortForm = 'o')]
+		public bool OnlyLatest { get; set; }
 
 		[Option("Quiet mode", "quiet", ShortForm = 'q')]
 		public bool Quiet { get; set; }
@@ -102,6 +110,7 @@ namespace cpdeploy
 		{
 			base.InitializeOtherDefaults();
 			From = Directory.GetCurrentDirectory();
+			BackupDir = "_OLDER";
 		}
 	}
 }

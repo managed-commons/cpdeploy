@@ -6,25 +6,27 @@ A copy deployer that tries not to copy unchanged content, written in C#.
 Usage
 -----
 
-    cpdeploy  1.1.3 - Copyright ©2015 Rafael 'Monoman' Teixeira, Managed Commons Team
+    cpdeploy  1.1.4 - Copyright ©2015 Rafael 'Monoman' Teixeira, Managed Commons Team
     A copy deployer that tries not to copy unchanged content.
-    
+
     License: MIT License - See http://opensource.org/licenses/MIT
-    
+
     Usage: cpdeploy [options] <path of directory to deploy into>
     Options:
-      -c -clean           Clean target directory
-      -d -dontoverwrite   Do not overwrite if there is a target directory
-      -f -from:directory  Path to directory to copy from (default: current directory)
-      -? -help            Show this help list
-      -q -quiet           Quiet mode
-      -s -summary         Summary mode - Only the summary line
-      -t -test            Test if there is anything to update
-      -v -verbose         Verbose output
-      -V -version         Display version and licensing information
-    
-    Please report bugs at <https://github.com/managed-commons/cpdeploy/issues>
+      -b -backup:subdirectory  Name of subdirectory to copy older versions with -o (default: _OLDER).
+      -c -clean                Clean target directory
+      -d -dontoverwrite        Do not overwrite if there is a target directory
+      -f -from:directory       Path to directory to copy from (default: current directory)
+      -? -help                 Show this help list
+      -o -onlylatest           Move older versions to backup folder (use -b to choose backup folder).
+                               Skips pinned dirs (those ending in '-PINNED')
+      -q -quiet                Quiet mode
+      -s -summary              Summary mode - Only the summary line
+      -t -test                 Test if there is anything to update
+      -v -verbose              Verbose output
+      -V -version              Display version and licensing information
 
+    Please report bugs at <https://github.com/managed-commons/cpdeploy/issues>
 
 License: MIT
 ------------
