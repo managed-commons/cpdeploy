@@ -28,89 +28,89 @@ using Commons.GetOptions;
 
 namespace cpdeploy
 {
-	internal class CopyDeployerOptions : Options
-	{
-		public CopyDeployerOptions(string[] args)
-			: base(args, OptionsParsingMode.Linux | OptionsParsingMode.GNU_DoubleDash, false, true, true)
-		{
-		}
+    internal class CopyDeployerOptions : Options
+    {
+        public CopyDeployerOptions(string[] args)
+            : base(args, OptionsParsingMode.Linux | OptionsParsingMode.GNU_DoubleDash, false, true, true)
+        {
+        }
 
-		[Option("Name of {subdirectory} to copy older versions with -o (default: _OLDER).", "backup", ShortForm = 'b')]
-		public string BackupDir { get; set; }
+        [Option("Name of {subdirectory} to copy older versions with -o (default: _OLDER).", "backup", ShortForm = 'b')]
+        public string BackupDir { get; set; }
 
-		[Option("Clean target directory", "clean", ShortForm = 'c')]
-		public bool CleanTarget { get; set; }
+        [Option("Clean target directory", "clean", ShortForm = 'c')]
+        public bool CleanTarget { get; set; }
 
-		[Option("Do not overwrite if there is a target directory", "dontoverwrite", ShortForm = 'd')]
-		public bool DontOverWrite { get; set; }
+        [Option("Do not overwrite if there is a target directory", "dontoverwrite", ShortForm = 'd')]
+        public bool DontOverWrite { get; set; }
 
-		[Option("Path to {directory} to copy from (default: current directory)", "from", ShortForm = 'f')]
-		public string From { get; set; }
+        [Option("Path to {directory} to copy from (default: current directory)", "from", ShortForm = 'f')]
+        public string From { get; set; }
 
-		public bool IsOk
-		{
-			get
-			{
-				if (string.IsNullOrWhiteSpace(FirstArgument)) {
-					DoHelp();
-					return false;
-				}
-				if (CleanTarget) {
-					if (DontOverWrite) {
-						ReportError(-1, "You can't ask to clean the target directory and to not overwrite it at the same time!!!");
-						return false;
-					}
-					if (Test) {
-						ReportError(-1, "You can't ask to clean the target directory and also test if something needs to be updated!!!");
-						return false;
-					}
-				}
-				if (Test) {
-					DontOverWrite = false;
-					OnlyLatest = false;
-				}
-				if (Summary)
-					Quiet = true;
-				if (Quiet)
-					Verbose = false;
-				return true;
-			}
-		}
+        public bool IsOk
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(FirstArgument)) {
+                    DoHelp();
+                    return false;
+                }
+                if (CleanTarget) {
+                    if (DontOverWrite) {
+                        ReportError(-1, "You can't ask to clean the target directory and to not overwrite it at the same time!!!");
+                        return false;
+                    }
+                    if (Test) {
+                        ReportError(-1, "You can't ask to clean the target directory and also test if something needs to be updated!!!");
+                        return false;
+                    }
+                }
+                if (Test) {
+                    DontOverWrite = false;
+                    OnlyLatest = false;
+                }
+                if (Summary)
+                    Quiet = true;
+                if (Quiet)
+                    Verbose = false;
+                return true;
+            }
+        }
 
-		[Option("Move older versions to backup folder (use -b to choose backup folder).\n\tSkips pinned dirs (those ending in '-PINNED')", "onlylatest", ShortForm = 'o')]
-		public bool OnlyLatest { get; set; }
+        [Option("Move older versions to backup folder (use -b to choose backup folder).\n\tSkips pinned dirs (those ending in '-PINNED')", "onlylatest", ShortForm = 'o')]
+        public bool OnlyLatest { get; set; }
 
-		[Option("Quiet mode", "quiet", ShortForm = 'q')]
-		public bool Quiet { get; set; }
+        [Option("Quiet mode", "quiet", ShortForm = 'q')]
+        public bool Quiet { get; set; }
 
-		[Option("Summary mode - Only the summary line", "summary", ShortForm = 's')]
-		public bool Summary { get; set; }
+        [Option("Summary mode - Only the summary line", "summary", ShortForm = 's')]
+        public bool Summary { get; set; }
 
-		[Option("Test if there is anything to update", "test", ShortForm = 't')]
-		public bool Test { get; set; }
+        [Option("Test if there is anything to update", "test", ShortForm = 't')]
+        public bool Test { get; set; }
 
-		public string To { get { return this.RemainingArguments.FirstOrDefault(s => !s.StartsWith("-")); } }
+        public string To { get { return this.RemainingArguments.FirstOrDefault(s => !s.StartsWith("-")); } }
 
-		[Option("Verbose output", "verbose", ShortForm = 'v')]
-		public bool Verbose { get; set; }
+        [Option("Verbose output", "verbose", ShortForm = 'v')]
+        public bool Verbose { get; set; }
 
-		[KillInheritedOption]
-		public override WhatToDoNext DoHelp2()
-		{
-			return base.DoHelp2();
-		}
+        [KillInheritedOption]
+        public override WhatToDoNext DoHelp2()
+        {
+            return base.DoHelp2();
+        }
 
-		[KillInheritedOption]
-		public override WhatToDoNext DoUsage()
-		{
-			return base.DoUsage();
-		}
+        [KillInheritedOption]
+        public override WhatToDoNext DoUsage()
+        {
+            return base.DoUsage();
+        }
 
-		protected override void InitializeOtherDefaults()
-		{
-			base.InitializeOtherDefaults();
-			From = Directory.GetCurrentDirectory();
-			BackupDir = "_OLDER";
-		}
-	}
+        protected override void InitializeOtherDefaults()
+        {
+            base.InitializeOtherDefaults();
+            From = Directory.GetCurrentDirectory();
+            BackupDir = "_OLDER";
+        }
+    }
 }
