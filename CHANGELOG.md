@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Adopting editorconfig and a changelog in the lines of [keep-a-changleog](https://github.com/olivierlacan/keep-a-changelog).
 
-## [1.1.4] - 2015-04-01
+## [1.1.4] - 2015-04-08
 ### Added
 - New -o --onlylatest and -b --backup options.
 
