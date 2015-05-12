@@ -36,9 +36,13 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Commons.GetOptions, Version=1.1.2015.3, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\Commons.GetOptions.1.1.1\lib\net45\Commons.GetOptions.dll</HintPath>
+    <Reference Include="Commons.Core, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Commons.Core.1.1.0-Alpha\lib\net45\Commons.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Commons.GetOptions, Version=2.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Commons.GetOptions.2.2.1-Alpha\lib\net45\Commons.GetOptions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

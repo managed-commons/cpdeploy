@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 ### Changed
+
+## [1.1.5] - 2015-05-12
+### Changed
+- Upgrade to Commons.GetOptions.2.2.1-Alpha and Commons.Core.1.1.0-Alpha
 - Adopting editorconfig and a changelog in the lines of [keep-a-changleog](https://github.com/olivierlacan/keep-a-changelog).
 
 ## [1.1.4] - 2015-04-08
@@ -31,8 +35,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Initial implementation with options for cleaning target directory (-c),
 to choose source directory (-f), and for quiet/verbose modes
 
-
-[unreleased]: https://github.com/managed-commons/cpdeploy/compare/76917b796954987575874eba8a4297527f08a8c9...HEAD
+[unreleased]: https://github.com/managed-commons/cpdeploy/compare/89a1f7f03f53a0e35ee825be43e7433a4451f242...HEAD
+[1.1.5]: https://github.com/managed-commons/cpdeploy/compare/76917b796954987575874eba8a4297527f08a8c9...89a1f7f03f53a0e35ee825be43e7433a4451f242
 [1.1.4]: https://github.com/managed-commons/cpdeploy/compare/f548d8adbf221ae54cf7e4c2d18df026a4533a63...76917b796954987575874eba8a4297527f08a8c9
 [1.1.3]: https://github.com/managed-commons/cpdeploy/compare/4b1e8ececc9ec52eaba7265422c3dd3277dd1ff8...f548d8adbf221ae54cf7e4c2d18df026a4533a63
 [1.1.2]: https://github.com/managed-commons/cpdeploy/compare/4c29fd649497aecd760a23654241bec0de63925f...4b1e8ececc9ec52eaba7265422c3dd3277dd1ff8
