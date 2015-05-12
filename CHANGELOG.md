@@ -31,7 +31,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Initial implementation with options for cleaning target directory (-c),
 to choose source directory (-f), and for quiet/verbose modes
 
-
 [unreleased]: https://github.com/managed-commons/cpdeploy/compare/76917b796954987575874eba8a4297527f08a8c9...HEAD
 [1.1.4]: https://github.com/managed-commons/cpdeploy/compare/f548d8adbf221ae54cf7e4c2d18df026a4533a63...76917b796954987575874eba8a4297527f08a8c9
 [1.1.3]: https://github.com/managed-commons/cpdeploy/compare/4b1e8ececc9ec52eaba7265422c3dd3277dd1ff8...f548d8adbf221ae54cf7e4c2d18df026a4533a63

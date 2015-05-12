@@ -23,23 +23,25 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Commons.Translation;
 
 namespace cpdeploy
 {
-	internal class Program
-	{
-		private static int Execute(CopyDeployerOptions options)
-		{
-			if (!options.IsOk)
-				return 1;
-			if (!(options.Quiet || options.Summary))
-				options.ShowBanner();
-			return new CopyDeployer(options).Execute();
-		}
+    internal class Program
+    {
+        private static int Execute(CopyDeployerOptions options)
+        {
+            if (!options.IsOk)
+                return 1;
+            if (!(options.Quiet || options.Summary))
+                options.ShowBanner();
+            return new CopyDeployer(options).Execute();
+        }
 
-		private static void Main(string[] args)
-		{
-			Environment.Exit(Execute(new CopyDeployerOptions(args)));
-		}
-	}
+        private static void Main(string[] args)
+        {
+            TranslationService.Locale = "en-US";
+            Environment.Exit(Execute(new CopyDeployerOptions(args)));
+        }
+    }
 }
