@@ -36,12 +36,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Commons.Core, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Commons.Core.1.1.0-Alpha\lib\net45\Commons.Core.dll</HintPath>
+    <Reference Include="Commons.Core, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Commons.Core.1.2.0-Alpha\lib\net45\Commons.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Commons.GetOptions, Version=2.2.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Commons.GetOptions.2.2.1-Alpha\lib\net45\Commons.GetOptions.dll</HintPath>
+    <Reference Include="Commons.GetOptions, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Commons.GetOptions.2.3.0-Alpha\lib\net45\Commons.GetOptions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -63,7 +63,9 @@
     <None Include="App.config" />
     <None Include="CHANGELOG.md" />
     <None Include="LICENSE" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
